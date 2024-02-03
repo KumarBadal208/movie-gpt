@@ -1,19 +1,68 @@
 import { useRef, useState } from "react";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { validateForm } from "../utils/validate";
 import Header from "./Header";
+import { auth } from "../utils/firebase";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = ()=>{
-
     const [loggedIn, setLoggedIn] = useState(true);
+    const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
     const name = useRef();
     const email = useRef();
     const password = useRef();
     const handleLoggIn = ()=>{
         setLoggedIn(!loggedIn);
     }
+    const dispatch = useDispatch();
 
     const onFormSubmit = ()=>{
-        console.log(email.current.value);
-        console.log(password.current.value);
+        let val = validateForm(email.current.value,password.current.value);
+        setErrorMessage(val);
+        if(val) return;
+
+        if(!loggedIn){
+            // signUp logic
+            createUserWithEmailAndPassword(auth, email.current.value,password.current.value)
+            .then((userCredential) => {
+                // Signed up 
+                const user = userCredential.user;
+                console.log(user);
+                updateProfile(user, {
+                    displayName: name.current.value, photoURL: "https://avatars.githubusercontent.com/u/60852657?v=4"
+                  }).then(() => {
+                    const {uid, email, displayName, photoURL} = auth.currentUser;
+                    dispatch(addUser({uid: uid, email: email, displayName: displayName, photoURL: photoURL}));
+                  }).catch((error) => {
+                    setErrorMessage(error.message);
+                  });
+                  
+                navigate("/browse");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                setErrorMessage(errorCode + "-" + errorMessage);
+            });
+        }
+        else{
+            // sigIn logic
+            signInWithEmailAndPassword(auth, email.current.value,password.current.value)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log(user);
+                navigate("/browse");
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                setErrorMessage(errorCode+ "- "+ errorMessage);
+            });
+        }
     }
 
     return (
@@ -22,8 +71,15 @@ const Login = ()=>{
             <div className="flex justify-center my-16 items-center">
                 <form onSubmit={(e)=>{e.preventDefault()}} className="opacity-85 px-4 py-8 flex flex-col items-center bg-gray-950 text-white w-1/3 h-[450px]">
                     <h1 className="font-bold text-2xl">{loggedIn ? "Sign In" : "Sign Up"}</h1>
+                    {
+                        !loggedIn && 
+                        <input ref={name} className="bg-gray-600 w-3/4 my-2 p-2 h-10 rounded-lg" placeholder="Enter Name"></input>
+                    }
                     <input ref={email} className="bg-gray-600 w-3/4 my-2 p-2 h-10 rounded-lg" placeholder="Enter Email"></input>
                     <input ref={password} className="bg-gray-600 w-3/4 my-2 p-2 h-10 rounded-lg" placeholder="Enter Password"></input>
+                    <div>
+                        <p className="text-red-500 font-extrabold">{errorMessage}</p>
+                    </div>
                     <div className="w-3/4 my-4">
                         <button onClick={onFormSubmit} className="bg-red-800 w-full h-10 rounded-lg">{loggedIn ? "Sign In" : "Sign Up"}</button>
                     </div>
@@ -32,7 +88,6 @@ const Login = ()=>{
                     </div>
                 </form>
             </div>
-            
         </div>
     )
 };
