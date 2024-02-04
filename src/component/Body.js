@@ -31,7 +31,7 @@ const Body = ()=>{
                 dispatch(removeUser());
             }
         });
-    },[]);
+    });
 
     return (
         <RouterProvider router={route}/>
