@@ -16,7 +16,7 @@ const Header = ()=>{
     }
 
     return (
-        <div className="flex justify-between bg-slate-300 items-center">
+        <div className="flex justify-between bg-slate-300 bg-gradient-to-b from-black items-center">
             <img alt="logo" className="h-20 w-48 font-bold bg-gradient-to-b from-black text-red-950" src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png" />
             <div className="flex">
                 <img

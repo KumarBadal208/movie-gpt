@@ -30,7 +30,7 @@ const Body = ()=>{
                 // User is signed out
                 dispatch(removeUser());
             }
-          });
+        });
     },[]);
 
     return (

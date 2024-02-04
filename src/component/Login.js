@@ -84,7 +84,7 @@ const Login = ()=>{
                         <button onClick={onFormSubmit} className="bg-red-800 w-full h-10 rounded-lg">{loggedIn ? "Sign In" : "Sign Up"}</button>
                     </div>
                     <div>
-                        {loggedIn && "New To Netflix?"} <a onClick={handleLoggIn} className="font-bold cursor-pointer">{loggedIn ? "Sign Up Now" : "Sign In Now"}</a>
+                        {loggedIn && "New To Netflix?"} <button onClick={handleLoggIn} className="font-bold cursor-pointer">{loggedIn ? "Sign Up Now" : "Sign In Now"}</button>
                     </div>
                 </form>
             </div>
