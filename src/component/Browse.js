@@ -6,8 +6,8 @@ import SecondaryContainer from "./SecondaryContainer";
 const Browse = ()=>{
     useNowPlayingMovies();
     return (
-        <div>
-            <Header/>
+        <div className="w-screen">
+            <Header parentPage="browse"/>
             <MainContainer/>
             <SecondaryContainer/>
         </div>
