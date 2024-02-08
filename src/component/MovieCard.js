@@ -4,7 +4,7 @@ import { IMAGE_CDN } from '../utils/constant'
 const MovieCard = ({movie}) => {
   return (
     <div className='m-2 w-40 hover:scale-110 transform delay-100'>
-        <img src={IMAGE_CDN + movie.poster_path}/>
+        <img alt="poster" src={IMAGE_CDN + movie.poster_path}/>
     </div>
   )
 }
