@@ -9,3 +9,5 @@ export const API_OPTIONS = {
 };
 
 export const IMAGE_CDN = "https://image.tmdb.org/t/p/w200/";
+
+export const OPEN_AI_KEY = "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";

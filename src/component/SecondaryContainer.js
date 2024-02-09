@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import usePopularMovies from '../hooks/usePopularMovies';
 import useTopRatedMovies from '../hooks/useTopRatedMovies';
 import MovieCard from './MovieCard';
+import MovieList from './MovieList';
 
 const SecondaryContainer = () => {
   usePopularMovies();
@@ -10,13 +11,10 @@ const SecondaryContainer = () => {
   const movies = useSelector(store=> store.movie?.nowPlayingMovie);
   const popularMovies = useSelector(store=> store.movie?.popularMovies);
   const topRatedMovies = useSelector(store=> store.movie?.topRatedMovies);
-  console.log("now",movies);
-  console.log("pop",popularMovies);
-  console.log("top",topRatedMovies);
   if(!movies) return;
 
   return (
-    <div className='m-4'>
+    <div className='m-4 bg-black'>
       <h1 className='text-white text-3xl'>Now Playing Movies</h1>
       <div className='flex overflow-x-scroll'>
         <div className='flex'>
@@ -26,6 +24,7 @@ const SecondaryContainer = () => {
           }
         </div>
       </div>
+      <MovieList movieTitle="Now Playing Movies" movies={movies} />
       <h1 className='text-white text-3xl'>Top Rated Movies</h1>
       <div className='flex overflow-x-scroll'>
         <div className='flex'>
